@@ -3,11 +3,9 @@ package Rev;
 public class AIPlayer implements Player{
     
     private int color;
-    private int cellScore;
     
-    public void AIPlayer(int col){
+    AIPlayer(int col){
         this.color = col;
-        this.cellScore = 0;
     }
     
     @Override
@@ -26,7 +24,7 @@ public class AIPlayer implements Player{
         int totalScore = 0;
         for (int i = 0; i < 8; ++i){
             for (int j = 0; j < 8; ++j){
-                int currentScore = field.courseCheck(i, j, color);
+                int currentScore = FieldAnalyzer.analize(field, i, j, color);
                 if (currentScore != 0){
                     if (((i == 0) && (j == 0)) || ((i == 0) && (j == 7)) || ((i == 7) && (j == 0)) || ((i == 7) && (j == 7))){
                         currentScore += 100;

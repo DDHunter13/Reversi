@@ -4,7 +4,7 @@ public class HumanPlayer implements Player {
     
     private int color;
     
-    public void HumanPlayer(int col){
+    HumanPlayer(int col){
         this.color = col;
     }
     
@@ -15,7 +15,7 @@ public class HumanPlayer implements Player {
     
     @Override
     public boolean makeMove(Field field, int i, int j){
-        int flag = field.courseCheck(i, j, color);
+        int flag = FieldAnalyzer.analize(field, i, j, color);
         if (flag > 0){
             field.setCellState(i, j, color);
             return true;

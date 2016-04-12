@@ -2,7 +2,11 @@ package Rev;
 
 public class Cell {
     
-    private int state = 0;
+    private int state;
+    
+    Cell(){
+        this.state = 0;
+    }
     
     public int getState(){
         return state;
