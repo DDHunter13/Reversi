@@ -9,7 +9,7 @@ public class Cell {
     }
     
     public int getState(){
-        return state;
+        return this.state;
     }
     
     public void setState(int st){

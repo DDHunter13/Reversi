@@ -5,7 +5,7 @@ public class FieldAnalyzer {
     public static boolean playerCheck(Field fl, int pl){
         for (int i = 0; i < 8; ++i){
             for (int j = 0; j < 8; ++j){
-                int flag = analize(fl, i, j, pl);
+                int flag = analyze(fl, i, j, pl);
                 if (flag != 0){
                     return true;
                 }
@@ -25,123 +25,40 @@ public class FieldAnalyzer {
         return false;
     }
     
-    public static int analize(Field fl, int i, int j, int pl){
+    public static int directionCheck (Field field, int x, int y, int dx, int dy, int pl){
         int flag = 0;
-        
+        x += dx;
+        y += dy;
+        while((x > -1) && (x < 8) && (y < 8) && (y > -1) && (field.getCellState(x, y) != pl)){
+            if(field.getCellState(x, y) == 0){
+                return 0;
+            }
+            ++flag;
+            x += dx;
+            y += dy;
+            if((x < 0) || (x > 7) || (y < 0) || (y > 7)){
+                return 0;
+            }
+        }        
+        return flag;
+    }
+    
+    public static int analyze(Field fl, int i, int j, int pl){
+        if ((i < 0) || (i > 7) || (j < 0) || (j > 7)){
+            return 0;
+        }
+        int flag = 0;        
         if (fl.getCellState(i, j) != 0) return 0; 
         
-        if ((j - 1 > -1) && (fl.getCellState(i, j - 1) != pl) && (fl.getCellState(i, j - 1) != 0)){
-            for (int k = j - 2; k > -1; --k){
-                if (fl.getCellState(i, k) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(i, k) == pl){
-                        flag += Math.abs(j - k - 1);
-                        break;
-                    }
-                }
-            }
-        }
+        flag += FieldAnalyzer.directionCheck(fl, i, j, -1, -1, pl);
+        flag += FieldAnalyzer.directionCheck(fl, i, j, -1, 0, pl);
+        flag += FieldAnalyzer.directionCheck(fl, i, j, -1, 1, pl);
+        flag += FieldAnalyzer.directionCheck(fl, i, j, 0, -1, pl);
+        flag += FieldAnalyzer.directionCheck(fl, i, j, 0, 1, pl);
+        flag += FieldAnalyzer.directionCheck(fl, i, j, 1, -1, pl);
+        flag += FieldAnalyzer.directionCheck(fl, i, j, 1, 0, pl);
+        flag += FieldAnalyzer.directionCheck(fl, i, j, 1, 1, pl);
         
-        if ((i - 1 > -1) && (j - 1 > -1) && (fl.getCellState(i - 1, j - 1) != pl) && (fl.getCellState(i - 1, j - 1) != 0)){
-            int k = 2;
-            while ((i - k > -1) && (j - k > -1)){
-                if (fl.getCellState(i - k, j - k) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(i - k, j - k) == pl){
-                        flag += k - 1;
-                        break;
-                    }
-                }
-                ++k;
-            }
-        }
-        
-        if ((i - 1 > -1) && (fl.getCellState(i - 1, j) != 0) && (fl.getCellState(i - 1, j) != pl)){
-            for (int k = i - 2; k > -1; --k){
-                if (fl.getCellState(k, j) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(k, j) == pl){
-                        flag += Math.abs(i - k - 1);
-                        break;
-                    }
-                }
-            }
-        }
-        
-        if ((i - 1 > -1) && (j + 1 < 8) && (fl.getCellState(i - 1, j + 1) != 0) && (fl.getCellState(i - 1, j + 1) != pl)){
-            int k = 2;
-            while ((i - k > -1) && (j + k < 8)){
-                if (fl.getCellState(i - k, j + k) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(i - k, j + k) == pl){
-                        flag += k - 1;
-                        break;
-                    }
-                }
-                ++k;
-            }
-        }
-        
-        if ((j + 1 < 8) && (fl.getCellState(i, j + 1) != 0) && (fl.getCellState(i, j + 1) != pl)){
-            for (int k = j + 2; k < 8; ++k){
-                if (fl.getCellState(i, k) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(i, k) == pl){
-                        flag += Math.abs(k - j - 1);
-                        break;
-                    }
-                }
-            }
-        }
-        
-        if ((i + 1 < 8) && (j + 1 < 8) && (fl.getCellState(i + 1, j + 1) != 0) && (fl.getCellState(i + 1, j + 1) != pl)){
-            int k = 2;
-            while ((i + k < 8) && (j + k < 8)){
-                if (fl.getCellState(i + k, j + k) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(i + k, j + k) == pl){
-                        flag += k - 1;
-                        break;
-                    }
-                }
-                ++k;
-            }
-        }
-        
-        if ((i + 1 < 8) && (fl.getCellState(i + 1, j) != 0) && (fl.getCellState(i + 1, j) != pl)){
-            for (int k = i + 2; k < 8; ++k){
-                if (fl.getCellState(k, j) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(k, j) == pl){
-                        flag += Math.abs(k - i - 1);
-                        break;
-                    }
-                }
-            }
-        }
-        
-        if ((i + 1 < 8) && (j - 1 > -1) && (fl.getCellState(i + 1, j - 1) != 0) && (fl.getCellState(i + 1, j - 1) != pl)){
-            int k = 2;
-            while ((i + k < 8) && (j - k > -1)){
-                if (fl.getCellState(i + k, j - k) == 0){
-                    break;
-                } else{
-                    if (fl.getCellState(i + k, j - k) == pl){
-                        flag += k - 1;
-                        break;
-                    }
-                }
-                ++k;
-            }
-        }
-
         return flag;      
     }
 }

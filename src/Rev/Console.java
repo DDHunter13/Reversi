@@ -1,6 +1,6 @@
 package Rev;
 
-import java.util.Scanner;
+import java.io.Writer;
 
 public class Console {
     
@@ -17,29 +17,20 @@ public class Console {
     
     public static void main (String args[]){
         
-        HumanPlayer hp = new HumanPlayer(1);
-        AIPlayer ai = new AIPlayer(2);
-        Scanner sc = new Scanner(System.in);
-        Field fl = new Field();
-        paintField(fl);
+        Player hp = new HumanPlayer(1);
+        Player ai = new AIPlayer(2);
+        
+        Field fl = new Field(System.out);
+        //paintField(fl);
+        fl.outputField();
+        
         
         int fff = 0;
         int x, y;
         while (fff == 0){
             
             if(FieldAnalyzer.playerCheck(fl, hp.getColor())){
-                x = sc.nextInt();
-                y = sc.nextInt();
-                if((x == 0) && (y == 0)){
-                    break;
-                }
-                while(!hp.makeMove(fl, x - 1, y - 1)){
-                    x = sc.nextInt();
-                    y = sc.nextInt();
-                   if((x == 0) && (y == 0)){
-                        break;
-                    }
-                }
+                hp.makeMove(fl);
             }
             
             paintField(fl);
@@ -50,9 +41,7 @@ public class Console {
             }
             
             if(FieldAnalyzer.playerCheck(fl, ai.getColor())){
-                int[] r = new int[2];
-                r = ai.chooseMove(fl);
-                ai.makeMove(fl, r[0], r[1]);
+                ai.makeMove(fl);
             }
             
             paintField(fl);

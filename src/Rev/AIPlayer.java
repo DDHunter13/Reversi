@@ -14,8 +14,10 @@ public class AIPlayer implements Player{
     }
     
     @Override
-    public boolean makeMove(Field field, int i, int j){
-        field.setCellState(i, j, color);
+    public boolean makeMove(Field field){
+        int[] res = new int[2];
+        res = this.moveAsk(field);
+        field.setCellState(res[0], res[1], color);
         return true;
     }
     
@@ -24,7 +26,7 @@ public class AIPlayer implements Player{
         int totalScore = 0;
         for (int i = 0; i < 8; ++i){
             for (int j = 0; j < 8; ++j){
-                int currentScore = FieldAnalyzer.analize(field, i, j, color);
+                int currentScore = FieldAnalyzer.analyze(field, i, j, color);
                 if (currentScore != 0){
                     if (((i == 0) && (j == 0)) || ((i == 0) && (j == 7)) || ((i == 7) && (j == 0)) || ((i == 7) && (j == 7))){
                         currentScore += 100;
@@ -43,5 +45,10 @@ public class AIPlayer implements Player{
         }
         
         return result;
+    }
+    
+    @Override
+    public int[] moveAsk(Field field){             
+        return this.chooseMove(field);
     }
 }

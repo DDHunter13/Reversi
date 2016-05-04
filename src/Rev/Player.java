@@ -2,7 +2,8 @@ package Rev;
 
 public interface Player {
     
-    public boolean makeMove(Field field, int i, int j);
+    public boolean makeMove(Field field);
+    public int[] moveAsk(Field field);
     public int getColor();
     
 }
